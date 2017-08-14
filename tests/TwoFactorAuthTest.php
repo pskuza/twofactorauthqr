@@ -15,14 +15,14 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 
     public function testConstructorThrowsOnInvalidPeriod()
     {
-        $this->expectException(TwoFactorAuthException::class);
+        $this->expectException('\pskuza\Auth\TwoFactorAuthException');
 
         new TwoFactorAuth('Test', 6, 0);
     }
 
     public function testConstructorThrowsOnInvalidAlgorithm()
     {
-        $this->expectException(TwoFactorAuthException::class);
+        $this->expectException('\pskuza\Auth\TwoFactorAuthException');
 
         new TwoFactorAuth('Test', 6, 30, 'xxx');
     }
@@ -32,19 +32,6 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
         $tfa = new TwoFactorAuth('Test');
         $this->assertEquals('543160', $tfa->getCode('VMR466AB62ZBOKHE', 1426847216));
         $this->assertEquals('538532', $tfa->getCode('VMR466AB62ZBOKHE', 0));
-    }
-
-    public function testCreateSecretGeneratesDesiredAmountOfEntropy()
-    {
-        $rng = new TestRNGProvider(true);
-
-        $tfa = new TwoFactorAuth('Test', 6, 30, 'sha1', null, $rng);
-        $this->assertEquals('A', $tfa->createSecret(5));
-        $this->assertEquals('AB', $tfa->createSecret(6));
-        $this->assertEquals('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $tfa->createSecret(128));
-        $this->assertEquals('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', $tfa->createSecret(160));
-        $this->assertEquals('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', $tfa->createSecret(320));
-        $this->assertEquals('ABCDEFGHIJKLMNOPQRSTUVWXYZ234567ABCDEFGHIJKLMNOPQRSTUVWXYZ234567A', $tfa->createSecret(321));
     }
 
     public function testVerifyCodeWorksCorrectly()
@@ -68,7 +55,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 
     public function testGetCodeThrowsOnInvalidBase32String1()
     {
-        $this->expectException(TwoFactorAuthException::class);
+        $this->expectException('\pskuza\Auth\TwoFactorAuthException');
 
         $tfa = new TwoFactorAuth('Test');
         $tfa->getCode('FOO1BAR8BAZ9');    //1, 8 & 9 are invalid chars
@@ -76,7 +63,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 
     public function testGetCodeThrowsOnInvalidBase32String2()
     {
-        $this->expectException(TwoFactorAuthException::class);
+        $this->expectException('\pskuza\Auth\TwoFactorAuthException');
 
         $tfa = new TwoFactorAuth('Test');
         $tfa->getCode('mzxw6===');        //Lowercase

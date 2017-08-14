@@ -37,7 +37,7 @@ class TwoFactorAuth
      */
     public function createSecret(int $bits = 80): string
     {
-        return \Base32::encode(random_bytes($bits));
+        return base_convert(random_bytes($bits), 255, 32)
     }
 
     /**
@@ -45,7 +45,7 @@ class TwoFactorAuth
      */
     public function getCode(string $secret, int $time = null): string
     {
-        $secretkey = \Base32::decode($secret);
+        $secretkey = base_convert($secret, 32, 255);
 
         $timestamp = "\0\0\0\0".pack('N*', $this->getTimeSlice($this->getTime($time)));  // Pack time into binary string
         $hashhmac = hash_hmac($this->algorithm, $timestamp, $secretkey, true);             // Hash it with users secret key
