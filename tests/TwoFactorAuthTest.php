@@ -8,7 +8,7 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructorThrowsOnInvalidDigits()
     {
-        $this->expectException(TwoFactorAuthException::class);
+        $this->expectException('\pskuza\Auth\TwoFactorAuthException');
 
         new TwoFactorAuth('Test', 0);
     }
@@ -64,25 +64,6 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $tfa->verifyCode('VMR466AB62ZBOKHE', '543160', 2, 1426847205 + 65));    //Test discrepancy
         $this->assertEquals(true, $tfa->verifyCode('VMR466AB62ZBOKHE', '543160', 2, 1426847205 - 65));    //Test discrepancy
-    }
-
-    public function testTotpUriIsCorrect()
-    {
-        $qr = new TestQrProvider();
-
-        $tfa = new TwoFactorAuth('Test&Issuer', 6, 30, 'sha1', $qr);
-        $data = $this->DecodeDataUri($tfa->getQRCodeImageAsDataUri('Test&Label', 'VMR466AB62ZBOKHE'));
-        $this->assertEquals('test/test', $data['mimetype']);
-        $this->assertEquals('base64', $data['encoding']);
-        $this->assertEquals('otpauth://totp/Test%26Label?secret=VMR466AB62ZBOKHE&issuer=Test%26Issuer&period=30&algorithm=SHA1&digits=6@200', $data['data']);
-    }
-
-    public function testGetQRCodeImageAsDataUriThrowsOnInvalidSize()
-    {
-        $qr = new TestQrProvider();
-
-        $tfa = new TwoFactorAuth('Test', 6, 30, 'sha1', $qr);
-        $tfa->getQRCodeImageAsDataUri('Test', 'VMR466AB62ZBOKHE', 0);
     }
 
     public function testGetCodeThrowsOnInvalidBase32String1()
