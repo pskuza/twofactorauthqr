@@ -2,6 +2,8 @@
 
 namespace pskuza\Auth;
 
+use Base32\Base32;
+
 // Based on / inspired by: https://github.com/PHPGangsta/GoogleAuthenticator & https://github.com/RobThree/TwoFactorAuth
 // Algorithms, digits, period etc. explained: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
 class TwoFactorAuth
@@ -37,7 +39,7 @@ class TwoFactorAuth
      */
     public function createSecret(int $bits = 80): string
     {
-        return base_convert(random_bytes($bits), 255, 32);
+        return \Base32::encode(random_bytes($bits));
     }
 
     /**
@@ -45,7 +47,7 @@ class TwoFactorAuth
      */
     public function getCode(string $secret, int $time = null): string
     {
-        $secretkey = base_convert($secret, 32, 255);
+        $secretkey = \Base32::decode($secret);
 
         $timestamp = "\0\0\0\0".pack('N*', $this->getTimeSlice($this->getTime($time)));  // Pack time into binary string
         $hashhmac = hash_hmac($this->algorithm, $timestamp, $secretkey, true);             // Hash it with users secret key
