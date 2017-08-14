@@ -8,16 +8,22 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructorThrowsOnInvalidDigits()
     {
+        $this->expectException(TwoFactorAuthException::class);
+
         new TwoFactorAuth('Test', 0);
     }
 
     public function testConstructorThrowsOnInvalidPeriod()
     {
+        $this->expectException(TwoFactorAuthException::class);
+
         new TwoFactorAuth('Test', 6, 0);
     }
 
     public function testConstructorThrowsOnInvalidAlgorithm()
     {
+        $this->expectException(TwoFactorAuthException::class);
+
         new TwoFactorAuth('Test', 6, 30, 'xxx');
     }
 
@@ -81,12 +87,16 @@ class TwoFactorAuthTest extends PHPUnit_Framework_TestCase
 
     public function testGetCodeThrowsOnInvalidBase32String1()
     {
+        $this->expectException(TwoFactorAuthException::class);
+
         $tfa = new TwoFactorAuth('Test');
         $tfa->getCode('FOO1BAR8BAZ9');    //1, 8 & 9 are invalid chars
     }
 
     public function testGetCodeThrowsOnInvalidBase32String2()
     {
+        $this->expectException(TwoFactorAuthException::class);
+
         $tfa = new TwoFactorAuth('Test');
         $tfa->getCode('mzxw6===');        //Lowercase
     }

@@ -10,7 +10,7 @@
         "christian-riesen/base32": "1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "^6"
     },
     "autoload": {
         "psr-4": {
