@@ -37,7 +37,7 @@ class TwoFactorAuth
      */
     public function createSecret(int $bits = 80): string
     {
-        return base_convert(random_bytes($bits), 255, 32)
+        return base_convert(random_bytes($bits), 255, 32);
     }
 
     /**
