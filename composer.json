@@ -1,0 +1,25 @@
+{
+    "name": "pskuza/twofactorauth",
+    "description": "Two Factor Authentication",
+    "version": "1.0",
+    "type": "library",
+    "keywords": [ "Authentication", "Two Factor Authentication", "Multi Factor Authentication", "TFA", "MFA", "PHP", "Authenticator", "Authy" ],
+    "license": "MIT",
+    "require": {
+        "php": "^7",
+        "christian-riesen/base32": "1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "pskuza\\Auth\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "pskuza\\Auth\\Test\\": "tests"
+        }
+    }
+}
